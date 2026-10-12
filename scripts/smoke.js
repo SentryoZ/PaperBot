@@ -213,6 +213,10 @@ async function main() {
   check('disconnect all removes every bot', manager.list().length === 0);
 
   // --------------------------------------------- decline resource pack
+  // AC6: bots apply their configured accept behaviour (accept by default) and
+  // never crash/disconnect. Decline is best-effort only — a pack that arrives
+  // during the configuration phase is auto-answered by the protocol layer, so
+  // this asserts the bot still connects when acceptResourcePack=false.
   const config2 = new ConfigStore(path.join(tmp, 'config2.json'));
   config2.update({ host: '127.0.0.1', port: PORT, version: '26.2', acceptResourcePack: false, connectDelayMin: 0, connectDelayMax: 50 });
   const manager2 = new BotManager(config2);
@@ -220,7 +224,7 @@ async function main() {
   manager2.on('event', (e) => events2.push(e));
   const [decliner] = manager2.createBots({ count: 1, names: ['SmokeDecline'], randomNames: false });
   const declinedSpawn = await waitFor(() => manager2.list().some((b) => b.state === 'spawned'), 40000);
-  check('declining a resource pack does not hang or crash', declinedSpawn, `bot ${decliner.name}`);
+  check('acceptResourcePack=false still connects (best-effort decline, no crash)', declinedSpawn, `bot ${decliner.name}`);
   manager2.disconnectAll();
 
   // ------------------------------------------------- settings persist
