@@ -104,18 +104,24 @@ $ npm run smoke
 == Paper 26.2 test-bot manager — smoke ==
 [smoke] node v24.21.0, java /usr/lib/jvm/java-25-openjdk-amd64/bin/java
 PASS  Paper 26.2 server started
-PASS  5 bots created with 5 distinct names  — Vera, Zara66, Nina28, Diego, OliverAshby
+PASS  5 bots created with 5 distinct names  — Isla52, Oliver55, Hana, BiancaCross, Zane
 PASS  5 spawn events observed  — 5/5 spawned
 PASS  spawn counted in state events
-PASS  a bot's chat reached the server (seen by another bot)  — smoke-chat-1791783000449
+PASS  a bot's chat reached the server (seen by another bot)  — smoke-chat-1791783131771
 PASS  a / command executed and the server replied  — /help
 PASS  bot accepted the server resource pack
 PASS  bot survived the resource pack (still spawned)  — 5/5 still spawned
-PASS  server kick does not crash the app  — kicked Vera
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:216:20) {
+  errno: -104,
+  code: 'ECONNRESET',
+  syscall: 'read'
+}
+PASS  server kick does not crash the app  — kicked Isla52
 PASS  kicked bot auto-respawns
 PASS  disconnect one bot removes it
 PASS  disconnect all removes every bot
-PASS  declining a resource pack does not hang or crash  — bot SmokeDecline
+PASS  acceptResourcePack=false still connects (best-effort decline, no crash)  — bot SmokeDecline
 PASS  settings persist to config.json
 PASS  settings honoured on reconnect (prefix applied)  — Smoke_Persist
 PASS  GET /api/status
@@ -128,9 +134,14 @@ PASS  POST /api/chat validates input
 20/20 checks passed
 ```
 
-The token `smoke-chat-1791783000449` and the random names are generated per run,
+The token `smoke-chat-1791783131771` and the random names are generated per run,
 so they differ each time; the `PASS`/`FAIL` lines and the `20/20` summary are
 the stable assertions.
+
+The `Error: read ECONNRESET` lines are **benign Node noise**: the kick test
+deliberately drops a live socket, and the socket's error is printed to stderr
+while the check still reports `PASS`. It does not fail the run (exit code 0).
+
 
 ---
 
