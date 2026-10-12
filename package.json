@@ -1,0 +1,25 @@
+{
+  "name": "mc-testbot-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web-managed Minecraft test-bot manager for PaperMC 26.2 offline-mode servers",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "compat": "node scripts/apply-compat.js",
+    "postinstall": "node scripts/apply-compat.js",
+    "smoke": "node scripts/smoke.js",
+    "paper": "bash scripts/paper-server.sh"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "minecraft-data": "3.117.0",
+    "minecraft-protocol": "1.68.0",
+    "mineflayer": "4.39.0",
+    "ws": "8.18.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

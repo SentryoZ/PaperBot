@@ -1,0 +1,8 @@
+node_modules/
+config.json
+.paper-server/
+.paper-server-smoke/
+.compat-cache/
+*.log
+.tmp/
+screenshots/
