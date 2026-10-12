@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minecraft Test-Bot Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">⛏</span>
+      <div>
+        <h1>Test-Bot Manager</h1>
+        <p class="subtitle">PaperMC 26.2 · offline mode</p>
+      </div>
+    </div>
+    <div class="status-pills">
+      <span id="api-pill" class="pill pill--down" title="REST API reachability">
+        <span class="dot"></span>API <b id="api-state">…</b>
+      </span>
+      <span id="ws-pill" class="pill pill--down" title="WebSocket connection">
+        <span class="dot"></span>WS <b id="ws-state">…</b>
+      </span>
+      <span class="pill pill--neutral" title="Connected bots">
+        <span class="dot"></span><b id="bot-count">0</b>&nbsp;bots
+      </span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ── Left column ─────────────────────────────────────────────── -->
+    <section class="col col--left">
+      <!-- Settings -->
+      <div class="card">
+        <div class="card__head">
+          <h2>Server settings</h2>
+          <span id="settings-state" class="muted"></span>
+        </div>
+        <form id="settings-form" class="grid">
+          <label>Host
+            <input id="set-host" name="host" type="text" autocomplete="off" placeholder="127.0.0.1" />
+          </label>
+          <label>Port
+            <input id="set-port" name="port" type="number" min="1" max="65535" />
+          </label>
+          <label>MC version
+            <input id="set-version" name="version" type="text" autocomplete="off" placeholder="26.2" />
+          </label>
+          <label class="switch">
+            <input id="set-acceptrp" name="acceptResourcePack" type="checkbox" />
+            <span>Accept resource packs</span>
+          </label>
+
+          <label>Nickname prefix
+            <input id="set-prefix" name="nicknamePrefix" type="text" autocomplete="off" placeholder="PaperBot" />
+          </label>
+          <label>Nickname mode
+            <select id="set-nickmode" name="nicknameMode">
+              <option value="random">Random</option>
+              <option value="realistic">Real-looking</option>
+              <option value="custom">Custom list</option>
+            </select>
+          </label>
+          <label>Connect delay min (ms)
+            <input id="set-delaymin" name="connectDelayMin" type="number" min="0" step="50" />
+          </label>
+          <label>Connect delay max (ms)
+            <input id="set-delaymax" name="connectDelayMax" type="number" min="0" step="50" />
+          </label>
+
+          <div class="actions span-2">
+            <button type="submit" class="btn btn--primary">Save settings</button>
+            <button type="button" id="settings-reload" class="btn btn--ghost">Reload</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Bot control -->
+      <div class="card">
+        <div class="card__head">
+          <h2>Bots</h2>
+          <span class="muted" id="selected-summary">all bots</span>
+        </div>
+        <form id="add-form" class="grid">
+          <label>How many
+            <input id="add-count" type="number" min="1" max="50" value="1" />
+          </label>
+          <label class="switch">
+            <input id="add-random" type="checkbox" checked />
+            <span>Random names</span>
+          </label>
+          <label class="span-2">Custom names <span class="muted">(comma or newline separated)</span>
+            <textarea id="add-names" rows="2" placeholder="Steve, Alex, Herobrine"></textarea>
+          </label>
+          <div class="actions span-2">
+            <button type="submit" class="btn btn--primary">Add bots</button>
+            <button type="button" id="btn-disconnect-all" class="btn btn--danger">Disconnect all</button>
+          </div>
+        </form>
+
+        <ul id="bot-list" class="bot-list" aria-live="polite">
+          <li class="empty">No bots yet — add some above.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── Right column ────────────────────────────────────────────── -->
+    <section class="col col--right">
+      <div class="card card--chat">
+        <div class="card__head">
+          <h2>Chat &amp; events</h2>
+          <div class="chat-tools">
+            <select id="chat-filter" title="Show chat from">
+              <option value="__all__">Combined (all bots)</option>
+            </select>
+            <button type="button" id="btn-clear-chat" class="btn btn--ghost btn--sm">Clear</button>
+          </div>
+        </div>
+        <div id="chat-log" class="chat-log" aria-live="polite"></div>
+        <div class="composer">
+          <div class="composer__row">
+            <input id="chat-input" type="text" placeholder="Say something in game…" autocomplete="off" />
+            <button type="button" id="btn-send-chat" class="btn btn--primary">Send chat</button>
+          </div>
+          <div class="composer__row">
+            <input id="command-input" type="text" placeholder="/command (e.g. /say hi, /tp …)" autocomplete="off" />
+            <button type="button" id="btn-send-command" class="btn">Run command</button>
+          </div>
+          <label class="switch switch--inline">
+            <input id="send-to-selected" type="checkbox" />
+            <span>Send to selected bots only</span>
+          </label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
