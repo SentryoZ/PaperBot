@@ -8,7 +8,7 @@ const CONFIG_PATH = path.join(__dirname, '..', 'config.json');
 /** Default settings, also the shape returned by GET /api/settings. */
 const DEFAULTS = {
   host: '127.0.0.1',
-  port: 25577,
+  port: 25565,
   version: process.env.MC_VERSION || '26.2',
   acceptResourcePack: true,
   nicknamePrefix: 'PaperBot',

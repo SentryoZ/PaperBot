@@ -178,8 +178,12 @@ class BotManager extends EventEmitter {
     });
 
     bot.on('message', (jsonMsg, position) => {
-      const text = jsonMsg && typeof jsonMsg.toString === 'function' ? jsonMsg.toString() : String(jsonMsg);
       const pos = position || 'chat';
+      // Action-bar text is delivered as 'game_info' (position id 2, which
+      // mineflayer also emits as 'actionBar'). It is transient HUD text rather
+      // than chat, so don't log it or surface it in the web chat feed.
+      if (pos === 'game_info') return;
+      const text = jsonMsg && typeof jsonMsg.toString === 'function' ? jsonMsg.toString() : String(jsonMsg);
       const record = { ts: Date.now(), position: pos, text };
       entry.chatLog.push(record);
       if (entry.chatLog.length > 200) entry.chatLog.shift();

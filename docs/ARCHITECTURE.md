@@ -115,9 +115,12 @@ regenerated after vendoring.
 `npm run compat`). It is idempotent — re-running is safe — and works offline
 from a vendored slice:
 
-1. **Stage data** — copy `vendor/minecraft-data-26.2/` (`dataPaths.json` +
-   `pc/26.2/**`) into `node_modules/minecraft-data/…/data`. If the vendored
-   slice is missing, fall back to downloading the `pc_26_2` tarball (cached in
+1. **Stage data** — copy `vendor/minecraft-data-26.2/` (`dataPaths.json` + all
+   vendored `pc/<version>/**` trees) into `node_modules/minecraft-data/…/data`.
+   Besides `pc/26.2/**`, the upstream `dataPaths.json` references a few files
+   the released package does not ship (`pc/26.1/proto.yml`,
+   `pc/1.20.3/windows.json`), so those are vendored too. If the vendored slice
+   is missing, fall back to downloading the `pc_26_2` tarball (cached in
    `.compat-cache/`).
 2. **Regenerate** `node_modules/minecraft-data/data.js`
    (`bin/generate_data.js`) so the new version is resolvable.

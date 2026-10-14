@@ -302,7 +302,9 @@ scripts/
   paper-server.sh   download + run Paper 26.2 offline
   smoke.js          end-to-end test against a real Paper 26.2 server
 vendor/
-  minecraft-data-26.2/  vendored 26.2 protocol data (dataPaths.json + pc/26.2)
+  minecraft-data-26.2/  vendored 26.2 protocol data (dataPaths.json + pc/26.2,
+                        plus cross-referenced pc/26.1/proto.yml and
+                        pc/1.20.3/windows.json)
 docs/
   ARCHITECTURE.md   components, version/compat strategy, removal path
   VERIFY.md         exact run/verify steps + observed output

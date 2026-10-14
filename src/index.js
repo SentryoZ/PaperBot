@@ -5,7 +5,7 @@ const { BotManager } = require('./bot-manager');
 const { createServer } = require('./server');
 
 const apiHost = process.env.API_HOST || '127.0.0.1';
-const apiPort = Number(process.env.API_PORT || process.env.PORT || 3000);
+const apiPort = Number(process.env.API_PORT || process.env.PORT || 25110);
 
 function main() {
   const config = new ConfigStore();

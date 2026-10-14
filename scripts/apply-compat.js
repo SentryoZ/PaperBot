@@ -107,8 +107,15 @@ async function stageDataFromVendor(dataDir) {
   log(`using vendored data at ${path.relative(root, vendor)} (offline)`);
   fs.mkdirSync(dataDir, { recursive: true });
   fs.copyFileSync(path.join(vendor, 'dataPaths.json'), path.join(dataDir, 'dataPaths.json'));
-  copyDir(path.join(vendor, 'pc', MC_VERSION), path.join(dataDir, 'pc', MC_VERSION));
-  log(`staged ${MC_VERSION} data into ${path.relative(root, dataDir)}`);
+  // Copy every vendored pc/<version> subtree. The vendored dataPaths.json is
+  // upstream's and references a few files outside pc/26.2 (pc/26.1/proto.yml,
+  // pc/1.20.3/windows.json) that the released package does not ship, so stage
+  // them alongside 26.2 or generate_data.js cannot resolve the index.
+  const vendorPc = path.join(vendor, 'pc');
+  for (const version of fs.readdirSync(vendorPc)) {
+    copyDir(path.join(vendorPc, version), path.join(dataDir, 'pc', version));
+  }
+  log(`staged vendored pc data into ${path.relative(root, dataDir)}`);
 }
 
 async function stageDataFromTarball(dataDir) {
